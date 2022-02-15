@@ -47,7 +47,7 @@ describe('GET /api/articles/:article_id', () => {
             .then(({ body }) => {
                 const { article } = body;
                 expect(article).toBeInstanceOf(Object)
-                expect.objectContaining({
+                expect(article).toEqual(expect.objectContaining({
                      article_id: expect.any(Number),
                     title: expect.any(String),
                     topic: expect.any(String),
@@ -55,7 +55,7 @@ describe('GET /api/articles/:article_id', () => {
                     body: expect.any(String),
                     created_at: expect.any(String),
                     votes: expect.any(Number)
-                })
+                }))
                 expect(article).toEqual({
                      article_id: 11,
                     title: "Am I a cat?",
@@ -67,12 +67,20 @@ describe('GET /api/articles/:article_id', () => {
                 })
         })
     });
-    test('should respond with a 404 error if an invalid article ID is passed in', () => {
+    test('should respond with a 404 error if an article ID that doesnt exist is passed in', () => {
         return request(app)
-            .get(`/api/articles/99999`)
+            .get(`/api/articles/999`)
             .expect(404)
             .then(({ body }) => {
-            expect(body.msg).toBe('No article found for article_id: 99999');
+            expect(body.msg).toBe('No article found for article_id: 999');
+    });
+    });
+     test('should respond with a 404 error if an invalid ID is passed in', () => {
+        return request(app)
+            .get(`/api/articles/banana`)
+            .expect(400)
+            .then(({ body }) => {
+            expect(body.msg).toBe('Invalid input');
     });
     });
 });
