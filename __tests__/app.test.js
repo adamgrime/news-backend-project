@@ -47,7 +47,7 @@ describe('GET /api/articles/:article_id', () => {
             .then(({ body }) => {
                 const { article } = body;
                 expect(article).toBeInstanceOf(Object)
-                expect(article).toEqual({
+                expect.objectContaining({
                      article_id: expect.any(Number),
                     title: expect.any(String),
                     topic: expect.any(String),
@@ -55,7 +55,16 @@ describe('GET /api/articles/:article_id', () => {
                     body: expect.any(String),
                     created_at: expect.any(String),
                     votes: expect.any(Number)
-          })
+                })
+                expect(article).toEqual({
+                     article_id: 11,
+                    title: "Am I a cat?",
+                    topic: "mitch",
+                    author: "icellusedkars",
+                    body: "Having run out of ideas for articles, I am staring at the wall blankly, like a cat. Does this make me a cat?",
+                    created_at: expect.any(String),
+                    votes: 0
+                })
         })
     });
     test('should respond with a 404 error if an invalid article ID is passed in', () => {
