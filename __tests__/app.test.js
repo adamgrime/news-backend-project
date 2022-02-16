@@ -135,3 +135,22 @@ describe('PATCH /api/articles/:article_id', () => {
     });
     });
 });
+
+describe('GET /api/topics', () => {
+    describe('GET /api/topics', () => {
+    test('responds with an array of username objects', () => {
+      return request(app)
+          .get('/api/users')
+          .expect(200)
+          .then(({ body }) => {
+              const { users } = body;
+              expect(users).toBeInstanceOf(Array)
+              expect(users.length).toBe(4)
+              users.forEach((user) => {
+                  expect(user.hasOwnProperty("username"))
+              })
+          })
+          
+     });
+    })
+});
