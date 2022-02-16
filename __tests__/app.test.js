@@ -66,12 +66,63 @@ describe('GET /api/articles/:article_id', () => {
             expect(body.msg).toBe('No article found for article_id: 999');
     });
     });
-     test('should respond with a 404 error if an invalid ID is passed in', () => {
+     test('should respond with a 400 error if an invalid ID is passed in', () => {
         return request(app)
             .get(`/api/articles/banana`)
             .expect(400)
             .then(({ body }) => {
             expect(body.msg).toBe('Invalid input');
+    });
+    });
+});
+
+describe('PATCH /api/articles/:article_id', () => {
+    test('should respons with an updated object where the votes have changed by the number provided in the object', () => {
+        return request(app)
+        .patch("/api/articles/11")
+        .send({inc_vote: -333})
+        .expect(201)
+            .then(({ body }) => {
+                expect(body.updatedArticle).toEqual(
+                    expect.objectContaining({
+                        article_id: expect.any(Number),
+                        title: expect.any(String),
+                        topic: expect.any(String),
+                        author: expect.any(String),
+                        body: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number)
+                    })
+                )
+            expect(body.updatedArticle.votes).toBe(-333)
+            expect(body.updatedArticle.article_id).toBe(11)
+        })
+    });
+    test('should respond with status 400 & bad request when the object value is not a number ', () => {
+        return request(app)
+        .patch("/api/articles/11")
+        .send({inc_vote: "banana"})
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad Request');
+    });
+    });
+    test('should respond with status 400 & bad request when the provided object is empty ', () => {
+        return request(app)
+        .patch("/api/articles/11")
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad Request');
+    });
+    });
+    test('should respons with a status 404 error if an invalid ID is provided', () => {
+         return request(app)
+        .patch("/api/articles/99999")
+        .send({inc_vote: 33})
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Invalid ID');
     });
     });
 });

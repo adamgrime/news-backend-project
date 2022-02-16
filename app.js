@@ -1,7 +1,9 @@
 const express = require('express');
-const { getTopics, getArticlesById } = require('./controllers/controllers');
+const { getTopics, getArticlesById, patchVoteUpdate } = require('./controllers/controllers');
 
 const app = express();
+
+app.use(express.json())
 
 app.get("/api/topics", getTopics)
 
@@ -9,6 +11,8 @@ app.get("/api/topics", getTopics)
 
 
 app.get("/api/articles/:article_id", getArticlesById)
+
+app.patch("/api/articles/:article_id", patchVoteUpdate)
 
 
 
@@ -27,7 +31,7 @@ app.use((err, req, res, next) => {
      if (err.status && err.msg) {
     res.status(err.status).send({ msg: err.msg });
   } else 
-  console.log(err);
+  //console.log(err);
   res.status(500).send('Server Error!');
 });
 
