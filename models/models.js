@@ -48,7 +48,6 @@ exports.updateVote = (votes, articleId) => {
 exports.fetchUsers = () => {
     return db.query("SELECT username FROM users;")
         .then(({ rows }) => {
-            console.log(rows)
             return rows
     })
 }

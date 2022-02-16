@@ -136,8 +136,7 @@ describe('PATCH /api/articles/:article_id', () => {
     });
 });
 
-describe('GET /api/topics', () => {
-    describe('GET /api/topics', () => {
+describe('GET /api/users', () => {
     test('responds with an array of username objects', () => {
       return request(app)
           .get('/api/users')
@@ -153,4 +152,3 @@ describe('GET /api/topics', () => {
           
      });
     })
-});
