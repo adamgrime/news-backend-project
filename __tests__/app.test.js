@@ -125,4 +125,13 @@ describe('PATCH /api/articles/:article_id', () => {
             expect(body.msg).toBe('Invalid ID');
     });
     });
+    test('should respond with 400 & "Invalid input" for where the article ID is not a number', () => {
+           return request(app)
+        .patch("/api/articles/banana")
+        .send({inc_vote: 14})
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Invalid input');
+    });
+    });
 });
