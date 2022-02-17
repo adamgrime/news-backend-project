@@ -152,3 +152,25 @@ describe('GET /api/users', () => {
           
      });
     })
+
+     describe('GET /api/articles', () => {
+        test('responds with an array of article objects', () => {
+            return request(app)
+                .get('/api/articles')
+                .expect(200)
+                .then(({ body }) => {
+                    const { articles } = body;
+                    expect(articles).toBeInstanceOf(Array)
+                    expect(articles.length).toBe(12)
+                    articles.forEach((article) => {
+                        expect(article.hasOwnProperty("author"))
+                        expect(article.hasOwnProperty("title"))
+                        expect(article.hasOwnProperty("article_id"))
+                        expect(article.hasOwnProperty("topic"))
+                        expect(article.hasOwnProperty("created_at"))
+                        expect(article.hasOwnProperty("votes"))
+                    })
+                })
+
+        });
+    })

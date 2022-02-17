@@ -23,7 +23,6 @@ exports.fetchArticleById = (article_id) => {
 
 exports.updateVote = (votes, articleId) => {
     const { article_id } = articleId
-    console.log(article_id)
     const { inc_vote } = votes
     if (typeof (inc_vote) != "number") {
         return Promise.reject({
@@ -31,7 +30,7 @@ exports.updateVote = (votes, articleId) => {
             msg: "Bad Request"
         })
     }
-    console.log(typeof (inc_vote))
+    //console.log(typeof (inc_vote))
     return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`, [inc_vote, article_id])
         .then(({ rows }) => {
             const article = rows[0]
@@ -50,4 +49,11 @@ exports.fetchUsers = () => {
         .then(({ rows }) => {
             return rows
     })
+}
+
+exports.fetchArticles = () => {
+    return db.query("SELECT * FROM articles")
+        .then(({ rows }) => {
+            return rows
+        })
 }
