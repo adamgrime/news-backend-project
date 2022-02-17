@@ -1,5 +1,5 @@
 const res = require("express/lib/response")
-const { fetchTopics, fetchArticleById, updateVote, fetchUsers } = require("../models/models")
+const { fetchTopics, fetchArticleById, updateVote, fetchUsers, fetchArticles } = require("../models/models")
 
 exports.getTopics = (req, res, next) => {
     fetchTopics().then((topic) => {
@@ -30,6 +30,15 @@ exports.patchVoteUpdate = (req, res, next) => {
 exports.getUsers = (req, res, next) => {
     fetchUsers().then((users) => {
         res.status(200).send({users})
+    })
+        .catch((err) => {
+        next(err)
+    })
+}
+
+exports.getArticles = (req, res, next) => {
+    fetchArticles().then((articles) => {
+        res.status(200).send({articles})
     })
         .catch((err) => {
         next(err)
