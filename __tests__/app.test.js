@@ -259,3 +259,20 @@ describe('Get /api/articles/:article_id/comments', () => {
       });
   });
 });
+
+describe('GET /api/articles (comment count)', () => {
+    test("Each article object in the array should also now include a comment count", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        response.body.articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              comment_count: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+});
