@@ -1,4 +1,5 @@
-const db = require("../db/connection")
+const db = require("../db/connection");
+const { checkExists } = require("../db/helpers/utils");
 
 exports.fetchTopics = () => {
     return db.query("SELECT * FROM topics;")
@@ -30,7 +31,6 @@ exports.updateVote = (votes, articleId) => {
             msg: "Bad Request"
         })
     }
-    //console.log(typeof (inc_vote))
     return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`, [inc_vote, article_id])
         .then(({ rows }) => {
             const article = rows[0]
@@ -56,4 +56,11 @@ exports.fetchArticles = () => {
         .then(({ rows }) => {
             return rows
         })
+}
+
+exports.fetchComments = (article_id) => {
+  return db.query("SELECT * FROM comments WHERE article_id = $1;", [article_id])
+    .then(({ rows }) => {
+      return rows;
+    });
 }
