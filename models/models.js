@@ -51,8 +51,40 @@ exports.fetchUsers = () => {
     })
 }
 
-exports.fetchArticles = () => {
-    return db.query("SELECT articles.*, CAST(COUNT(comments.article_id) AS INT) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC;")
+exports.fetchArticles = (sort_by, order, topic) => {
+
+    if (!order) order = "DESC";
+    if (!sort_by) sort_by = "created_at"
+    
+    const validOrdering = ["ASC", "DESC"];
+    const validSorting = [
+    "article_id",
+    "title",
+    "topic",
+    "author",
+    "created_at",
+    "votes",
+    ];
+    
+    if (!validSorting.includes(sort_by)) {
+    return Promise.reject({ status: 400, msg: "Invalid sort query" });
+    }
+    
+    if (!validOrdering.includes(order)) {
+    return Promise.reject({ status: 400, msg: "Invalid order query" });
+    }
+
+    const queryArray = []
+    let queryString = "SELECT articles.*, CAST(COUNT(comments.article_id) AS INT) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id"
+
+    if (topic) {
+		queryString += ' WHERE articles.topic = $1';
+		queryArray.push(topic);
+    }
+
+    queryString += ` GROUP BY articles.article_id ORDER BY articles.${sort_by} ${order}`;
+    
+    return db.query(queryString + ";", queryArray)
         .then(({ rows }) => {
             return rows
         })
@@ -60,6 +92,19 @@ exports.fetchArticles = () => {
 
 exports.fetchComments = (article_id) => {
   return db.query("SELECT * FROM comments WHERE article_id = $1;", [article_id])
+    .then(({ rows }) => {
+      return rows;
+    });
+}
+
+
+exports.insertComment = (article_id, newComment) => {
+      const { username, body } = newComment;
+  if (!newComment) {
+    return Promise.reject({ status: 400, msg: "Invalid input" });
+  }
+  return db
+    .query("INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",[username, body, article_id])
     .then(({ rows }) => {
       return rows;
     });

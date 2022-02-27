@@ -38,7 +38,8 @@ exports.getUsers = (req, res, next) => {
 }
 
 exports.getArticles = (req, res, next) => {
-    fetchArticles().then((articles) => {
+    const { sort_by, order, topic } = req.query;
+    fetchArticles(sort_by,order,topic).then((articles) => {
         res.status(200).send({articles})
     })
         .catch((err) => {
@@ -57,3 +58,19 @@ exports.getComments = (req, res, next) => {
         next(err)
     })
 }
+
+exports.postComment = (req, res, next) => {
+  const { article_id } = req.params;
+  checkExists(article_id)
+    then(() => {})
+    .catch((err) => {
+      next(err);
+    });
+    insertComment(article_id, req.body)
+    .then((comment) => {
+      res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
