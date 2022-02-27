@@ -247,7 +247,7 @@ describe('Get /api/articles/:article_id/comments', () => {
             .get("/api/articles/1234567/comments")
             .expect(404)
             .then(({ body: { msg } }) => {
-            expect(msg).toBe("Article not found");
+            expect(msg).toBe("resource not found");
         })
 });
     test('status: 400 - responds with "invalid input" for invalid article_id', () => {
@@ -278,6 +278,7 @@ describe('GET /api/articles (comment count)', () => {
 });
 
 describe('GET /api/articles (queries)', () => {
+
    
     test('should work with a sort by query', () => {
         return request(app)
@@ -326,4 +327,32 @@ describe('GET /api/articles (queries)', () => {
         expect(response.body.articles[0].topic).toEqual("mitch");
       });
   });
+});
+
+describe('DELETE /api/comments/:comment_id', () => {
+    
+    test('should respond with a 204 and delete the comment for the id provided', () => {
+     return request(app)
+        .delete(`/api/comments/2`)
+        .expect(204)
+        .then(() => {});
+    });
+    
+    test("should respond with a status 404 when passed an invalid comment id", () => {
+        return request(app)
+          .delete(`/api/comments/98734698`)
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+    });
+    
+    test("should respons with a status 400 if an invalid comment id is passed in", () => {
+        return request(app)
+          .delete(`/api/comments/sdjofhbs`)
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Invalid input");
+          });
+      });
 });

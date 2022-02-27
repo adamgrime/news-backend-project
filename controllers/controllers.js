@@ -1,6 +1,6 @@
 const res = require("express/lib/response")
-const { checkExists } = require("../db/helpers/utils")
-const { fetchTopics, fetchArticleById, updateVote, fetchUsers, fetchArticles, fetchComments } = require("../models/models")
+const { checkExists, checkItExists } = require("../db/helpers/utils")
+const { fetchTopics, fetchArticleById, updateVote, fetchUsers, fetchArticles, fetchComments, removeComment } = require("../models/models")
 
 exports.getTopics = (req, res, next) => {
     fetchTopics().then((topic) => {
@@ -43,14 +43,13 @@ exports.getArticles = (req, res, next) => {
         res.status(200).send({articles})
     })
         .catch((err) => {
-        console.log(err)
         next(err)
     })
 }
 
 exports.getComments = (req, res, next) => {
     const { article_id } = req.params
-    Promise.all([fetchComments(article_id), checkExists(article_id)])
+    Promise.all([fetchComments(article_id), checkItExists("articles", "article_id", article_id)])
     .then(([comments]) => {
       res.status(200).send({ comments });
     })
@@ -73,4 +72,15 @@ exports.postComment = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.deleteCommentById = (req, res, next) => {
+    const { comment_id } = req.params
+    Promise.all([checkItExists("comments", "comment_id", comment_id), removeComment(comment_id)])
+        .then(() => {
+            res.status(204).send();
+        })
+        .catch((err) => {
+            next(err);
+        });
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { getTopics, getArticlesById, patchVoteUpdate, getUsers, getArticles, getComments, postComment } = require('./controllers/controllers');
+const { getTopics, getArticlesById, patchVoteUpdate, getUsers, getArticles, getComments, postComment, deleteCommentById } = require('./controllers/controllers');
 
 const app = express();
 
@@ -19,13 +19,14 @@ app.get("/api/articles/:article_id", getArticlesById)
 
 app.patch("/api/articles/:article_id", patchVoteUpdate)
 
+app.delete("/api/comments/:comment_id", deleteCommentById)
+
 
 
 
 
 
 app.all("/*", (req, res, next) => {
-    console.log("inside all")
     res.status(404).send({msg: "Invalid URL"})
 })
 
@@ -36,7 +37,6 @@ app.use((err, req, res, next) => {
      if (err.status && err.msg) {
     res.status(err.status).send({ msg: err.msg });
   } else 
-  //console.log(err);
   res.status(500).send('Server Error!');
 });
 
