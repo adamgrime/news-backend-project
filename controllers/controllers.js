@@ -1,5 +1,6 @@
 const res = require("express/lib/response");
 const { checkExists, checkItExists } = require("../db/helpers/utils");
+const fs= require('fs')
 
 const {
   fetchTopics,
@@ -11,6 +12,14 @@ const {
   removeComment,
   insertComment,
 } = require("../models/models");
+
+exports.getApi = (req, res, next) => {
+  let allEndpoints;
+  fs.readFile("endpoints.json", "utf8", function (err, data) {
+    allEndpoints = JSON.parse(data);
+    res.status(200).send(allEndpoints);
+  });
+};
 
 exports.getTopics = (req, res, next) => {
   fetchTopics()
