@@ -99,14 +99,14 @@ exports.fetchComments = (article_id) => {
 
 
 exports.insertComment = (article_id, newComment) => {
-      const { username, body } = newComment;
+    const { username, body } = newComment;
   if (!newComment) {
     return Promise.reject({ status: 400, msg: "Invalid input" });
   }
   return db
     .query("INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",[username, body, article_id])
-    .then(({ rows }) => {
-      return rows;
+      .then(({ rows }) => {
+      return rows[0];
     });
 }
 
