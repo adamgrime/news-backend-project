@@ -2,7 +2,7 @@
 
 # 1. Introduction
 
-I have created this Northcoders news API as my backend project during my time on the [Northcoders](https://www.northcoders.com/) 13 week Javascript bootcamp. 
+I have created this Northcoders news API as my backend project during my time on the [Northcoders](https://www.northcoders.com/) 13 week Javascript bootcamp. This API has been created to provide data for my [front end project](https://github.com/adamgrime/nc-news).
 
 This is a PSQL database hosted via Heroku which you can visit following this link: https://ag-nc-news.herokuapp.com/
 
@@ -18,18 +18,18 @@ npm install
 # 3. Local Seeding
 
 
-To connect to the two databases locally, at root level you will need to create two .env files, one titled ".env.development" and one ".env.test".
+To connect to the two databases locally, at root level you will need to create two env files, one titled ".env.development" and one ".env.test".
 
 Within the "development" file you will need to add the following line: 
 ```
-PGDATABASE=nc_news. 
+PGDATABASE=nc_news
 ```
 Within the "test" file add: 
 ```
-PGDATABASE=nc_news_test.
+PGDATABASE=nc_news_test
 ```
 
-Once completed, run `npm seed`.
+Once completed, run `npm seed`
 
 # 4. Testing
 

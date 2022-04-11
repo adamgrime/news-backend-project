@@ -1,6 +1,5 @@
-const db = require("../connection")
-const format = require("pg-format")
-
+const db = require("../connection");
+const format = require("pg-format");
 
 exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   if (!created_at) return { ...otherProperties };
@@ -32,6 +31,4 @@ exports.checkItExists = (table, column, value) => {
       return Promise.reject({ status: 404, msg: "resource not found" });
     }
   });
-}
-
-
+};
