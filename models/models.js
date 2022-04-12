@@ -29,6 +29,7 @@ exports.updateVote = (votes, articleId) => {
   const { article_id } = articleId;
   const { inc_vote } = votes;
   if (typeof inc_vote != "number") {
+    console.log(typeof inc_vote);
     return Promise.reject({
       status: 400,
       msg: "Bad Request",
@@ -69,6 +70,7 @@ exports.fetchArticles = (sort_by, order, topic) => {
     "author",
     "created_at",
     "votes",
+    "comment_count"
   ];
 
   if (!validSorting.includes(sort_by)) {
