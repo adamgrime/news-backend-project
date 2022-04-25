@@ -28,8 +28,7 @@ exports.fetchArticleById = (article_id) => {
 exports.updateVote = (votes, articleId) => {
   const { article_id } = articleId;
   const { inc_vote } = votes;
-  if (typeof inc_vote != "number") {
-    console.log(typeof inc_vote);
+  if (typeof inc_vote !== "number") {
     return Promise.reject({
       status: 400,
       msg: "Bad Request",
@@ -70,7 +69,7 @@ exports.fetchArticles = (sort_by, order, topic) => {
     "author",
     "created_at",
     "votes",
-    "comment_count"
+    "comment_count",
   ];
 
   if (!validSorting.includes(sort_by)) {
@@ -90,7 +89,7 @@ exports.fetchArticles = (sort_by, order, topic) => {
     queryArray.push(topic);
   }
 
-  queryString += ` GROUP BY articles.article_id ORDER BY articles.${sort_by} ${order}`;
+  queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order}`;
 
   return db.query(queryString + ";", queryArray).then(({ rows }) => {
     return rows;

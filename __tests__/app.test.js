@@ -403,6 +403,15 @@ describe("GET /api/articles (queries)", () => {
       });
   });
 
+  test("status: 200 - accepts order query", () => {
+    return request(app)
+      .get("/api/articles?sort_by=comment_count&order=ASC")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("comment_count", { ascending: true });
+      });
+  });
+
   test("should return articles filtered by topic", () => {
     return request(app)
       .get("/api/articles?topic=mitch")
