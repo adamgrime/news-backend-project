@@ -31,7 +31,7 @@ exports.updateVote = (votes, articleId) => {
   if (typeof voteNumber !== "number") {
     return Promise.reject({
       status: 400,
-      msg: "Bad Request",
+      msg: "Invalid Request",
     });
   }
   return db
