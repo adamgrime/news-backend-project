@@ -104,7 +104,7 @@ describe("PATCH /api/articles/:article_id", () => {
       .send({ inc_vote: "banana" })
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Invali Request");
+        expect(body.msg).toBe("Bad Request");
       });
   });
   test("should respond with status 400 & bad request when the provided object is empty ", () => {
@@ -113,7 +113,7 @@ describe("PATCH /api/articles/:article_id", () => {
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Invali Request");
+        expect(body.msg).toBe("Bad Request");
       });
   });
   test("should respons with a status 404 error if an invalid ID is provided", () => {
