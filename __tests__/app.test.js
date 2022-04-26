@@ -80,7 +80,7 @@ describe("PATCH /api/articles/:article_id", () => {
   test("should respons with an updated object where the votes have changed by the number provided in the object", () => {
     return request(app)
       .patch("/api/articles/11")
-      .send({ inc_vote: -333 })
+      .send({ inc_vote: 1 })
       .expect(201)
       .then(({ body }) => {
         expect(body.updatedArticle).toEqual(
@@ -94,7 +94,7 @@ describe("PATCH /api/articles/:article_id", () => {
             votes: expect.any(Number),
           })
         );
-        expect(body.updatedArticle.votes).toBe(-333);
+        expect(body.updatedArticle.votes).toBe(1);
         expect(body.updatedArticle.article_id).toBe(11);
       });
   });

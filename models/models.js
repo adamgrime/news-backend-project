@@ -28,15 +28,12 @@ exports.fetchArticleById = (article_id) => {
 exports.updateVote = (votes, articleId) => {
   const { article_id } = articleId;
   const voteNumber = votes.inc_vote;
-  console.log(votes)
-  console.log(voteNumber)
-  console.log(typeof voteNumber)
   if (typeof voteNumber !== "number") {
     return Promise.reject({
       status: 400,
       msg: "Bad Request",
     });
-  }
+  } 
   return db
     .query(
       `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`,
